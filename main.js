@@ -1,5 +1,8 @@
+// 项目入口
+
 const {app, BrowserWindow, ipcMain} = require('electron')
 app.on('ready', () => {
+
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -8,22 +11,21 @@ app.on('ready', () => {
     }
   })
 
-  mainWindow.loadFile('index.html')
+  //主窗口
+  mainWindow.loadFile('./renderer/index.html')
 
-  const secondWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: mainWindow
+  ipcMain.on('add-music-window', () => {
+    const addWindow = new BrowserWindow({
+      width: 500,
+      height:400,
+      webPreferences: {
+        nodeIntegration: true
+      },
+      parent: mainWindow
+    })
+
+    addWindow.loadFile('./renderer/add.html')
   })
-  secondWindow.loadFile('window2.html')
 
 
-  ipcMain.on('message', (event, arg) => { 
-    console.log(arg)
-    // event.sender.send()
-    mainWindow.send('reply', 'hello from main')
-  })
 })
