@@ -12,5 +12,8 @@ const { BrowserWindow } = require('electron')
     const finalConfig = {...bisicCofig, ...config}
     super(finalConfig)
     this.loadFile(fileLocation)
+    this.once('ready-to-show', () => {
+      this.show()
+    })
   }
 }
